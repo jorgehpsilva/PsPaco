@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conversor de Moedas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+  <h2>Conversor de Moedas</h2>
+
+  <form class="mb-3">
+    <div class="row g-2">
+      <div class="col">
+        <input type="number" class="form-control" placeholder="Valor" id="amount" required>
+      </div>
+      <div class="col">
+        <select class="form-select" id="from">
+          <option value="BRL">BRL</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="BTC">BTC</option>
+          <option value="CAD">CAD</option>
+          <option value="JPY">JPY</option>
+        </select>
+      </div>
+      <div class="col">
+        <select class="form-select" id="to">
+          <option value="BRL">BRL</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="BTC">BTC</option>
+          <option value="CAD">CAD</option>
+          <option value="JPY">JPY</option>
+        </select>
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-primary" onclick="converter()">Converter</button>
+      </div>
+    </div>
+  </form>
+
+  <div id="resultado" class="mb-4"></div>
+
+  <h4>Histórico de Conversões</h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Valor</th>
+        <th>De</th>
+        <th>Para</th>
+        <th>Taxa</th>
+        <th>Resultado</th>
+      </tr>
+    </thead>
+    <tbody id="history-body"></tbody>
+  </table>
+
+  <nav>
+    <ul class="pagination" id="pagination"></ul>
+  </nav>
+
+  <script>
+    let currentPage = 0;
+    const pageSize = 5;
+
+    function converter() {
+      const amount = document.getElementById('amount').value;
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+
+      fetch(`/api/convert?amount=${amount}&from=${from}&to=${to}`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+        .then(res => {
+          if (!res.ok) throw new Error(`Erro: ${res.status}`);
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById('resultado').innerText =
+            `Resultado: ${data.result.toFixed(2)} ${to}`;
+          carregarHistorico(); 
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('resultado').innerText =
+            'Erro ao converter. Faça login ou tente novamente.';
+        });
+    }
+
+    function carregarHistorico(page = 0) {
+      fetch(`/api/history?page=${page}&size=${pageSize}`, {
+        credentials: 'include'
+      })
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById('history-body');
+          tbody.innerHTML = '';
+          data.content.forEach(conv => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${new Date(conv.date).toLocaleString()}</td>
+              <td>${conv.amount}</td>
+              <td>${conv.fromCurrency}</td>
+              <td>${conv.toCurrency}</td>
+              <td>${conv.exchangeRate.toFixed(4)}</td>
+              <td>${conv.result.toFixed(2)}</td>
+            `;
+            tbody.appendChild(row);
+          });
+
+          montarPaginacao(data.totalPages, data.number);
+        });
+    }
+
+    function montarPaginacao(totalPages, currentPage) {
+      const pag = document.getElementById('pagination');
+      pag.innerHTML = '';
+
+      for (let i = 0; i < totalPages; i++) {
+        const li = document.createElement('li');
+        li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+        li.innerHTML = `<button class="page-link" onclick="carregarHistorico(${i})">${i + 1}</button>`;
+        pag.appendChild(li);
+      }
+    }
+
+    window.onload = () => carregarHistorico();
+  </script>
+</body>
+</html>
+

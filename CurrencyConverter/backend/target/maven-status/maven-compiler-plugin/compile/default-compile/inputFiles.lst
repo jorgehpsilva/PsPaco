@@ -1,0 +1,12 @@
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\model\Conversion.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\repository\UserRepository.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\model\ExchangeRate.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\ConverterApplication.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\config\AppConfig.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\config\SecurityConfig.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\dto\ExchangeRateResponse.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\service\ConversionService.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\model\User.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\controller\ConversionController.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\repository\ConversionRepository.java
+C:\Users\Jorge Silva\Desktop\Paco\CurrencyConverter\backend\src\main\java\com\example\converter\repository\ExchangeRateRepository.java
